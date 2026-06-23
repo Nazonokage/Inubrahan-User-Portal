@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 ```markdown
 # Inubrahan PHP User Portal (Register • Login • Profile)
 
@@ -20,11 +21,71 @@ A clean, responsive PHP and MySQL user management system utilizing an architectu
 - **Database:** MySQL
 - **Frontend:** HTML5, CSS3, JavaScript (ES6)
 - **Libraries:** Particles.js
+=======
+# Inubrahan User Portal (Register • Login • Profile)
+
+Small PHP + MySQL project that lets users:
+- Register (with profile picture upload)
+- Login (session-based)
+- View a protected welcome/dashboard page
+- Edit profile (update names, optionally change password, optionally upload a new profile picture)
+- Logout (destroy session)
+
+Most pages include a **Particles.js** animated background and a loader animation.
+
+---
+
+## Features
+- **UI entry**: `index.php` (links to Register / Login)
+- **Registration**: `html.php` → `logic/register.php`
+- **Login**: `Login.php` → `logic/hasing.php`
+- **Protected pages** (login required):
+  - `welcome.php`
+  - `profile.php`
+- **Profile update**: `profile.php` → `logic/updateprof.php`
+- **Logout**: `logic/logout.php`
+
+---
+
+## Tech Stack
+- PHP (mysqli)
+- MySQL
+- HTML/CSS/JS
+- Particles.js
+
+---
+
+## How it’s organized
+### Frontend pages
+- `index.php`
+- `html.php` (registration form)
+- `Login.php` (login form)
+- `welcome.php` (dashboard)
+- `profile.php` (edit profile)
+
+### Backend logic
+- `conn.php` (MySQL connection)
+- `logic/register.php` (create user + upload profile picture)
+- `logic/hasing.php` (verify credentials + create session)
+- `logic/updateprof.php` (verify current password + update profile)
+- `logic/logout.php` (session destroy)
+
+### Assets
+- `css/style.css`, `css/loader.css`
+- `js/particles.js`, `js/particles.json`
+- `img/mapache-pedro.gif`
+- `uploads/` (profile pictures)
+
+### SQL reference (archive)
+- `hawid/bag_o_db.sql`
+- `hawid/data1.sql`
+>>>>>>> Stashed changes
 
 ---
 
 ## 📂 Project Directory Structure
 
+<<<<<<< Updated upstream
 ```text
 Car4Rent/
 │
@@ -58,10 +119,86 @@ Car4Rent/
     ├── bag_o_db.sql          # Compiled initial structural schema
     └── data1.sql             # Legacy production snapshot reference
 
+=======
+### Landing (`index.php`)
+```mermaid
+flowchart TD
+  A[index.php] --> B[Register]
+  A --> C[Login]
+  B --> D[html.php]
+  C --> E[Login.php]
+```
+
+### Registration
+```mermaid
+flowchart TD
+  A[html.php: submit registration] --> B[logic/register.php]
+  B --> C[Sanitize inputs]
+  C --> D[Hash password (MD5)]
+  D --> E[Validate uploaded picture extension]
+  E -->|Invalid| F[Stop with error]
+  E -->|Valid| G[Insert user into DB]
+  G --> H[Rename uploaded file: user_id + email + extension]
+  H --> I[Move file to /uploads]
+  I --> J[Update user.profile_picture]
+  J --> K[Redirect to login.php]
+```
+
+### Login / Session creation
+```mermaid
+flowchart TD
+  A[Login.php: submit login] --> B[logic/hasing.php]
+  B --> C[Hash password (MD5)]
+  C --> D[SELECT user WHERE username=? AND password=?]
+  D -->|Found| E[Set session variables]
+  E --> F[Redirect to welcome.php]
+  D -->|Not found| G[Set login_error]
+  G --> H[Redirect to login.php]
+```
+
+### Protected welcome (`welcome.php`)
+```mermaid
+flowchart TD
+  A[welcome.php] --> B[session_start]
+  B --> C{$_SESSION['loggedin'] == true ?}
+  C -->|No| D[Redirect to login.php]
+  C -->|Yes| E[Fetch user details from DB]
+  E --> F[Render dashboard]
+```
+
+### Protected profile edit (`profile.php`)
+```mermaid
+flowchart TD
+  A[profile.php] --> B[session_start]
+  B --> C{loggedin == true ?}
+  C -->|No| D[Redirect to login.php]
+  C -->|Yes| E[Render profile form]
+
+  E --> F[Submit form]
+  F --> G[logic/updateprof.php]
+  G --> H[Verify current_password (MD5 compare)]
+  H -->|Wrong| I[Redirect to profile.php]
+  H -->|Correct| J[Build UPDATE query]
+  J --> K[Update username/firstname/lastname]
+  J --> L[If new_password provided, update password]
+  J --> M[If new picture uploaded, validate + replace file]
+  M --> N[Update profile_picture in DB]
+  N --> O[Update session vars]
+  O --> P[Redirect to welcome.php]
+```
+
+### Logout
+```mermaid
+flowchart TD
+  A[Logout] --> B[logic/logout.php]
+  B --> C[session_unset + session_destroy]
+  C --> D[Redirect to login.php]
+>>>>>>> Stashed changes
 ```
 
 ---
 
+<<<<<<< Updated upstream
 ## 📊 Application Architecture & Flowcharts
 
 ### 1. Unified Portal Entry Vector
@@ -180,6 +317,37 @@ DROP TABLE IF EXISTS user;
 3. Establish database setup routing workflows as detailed in the provisioning specifications block above.
 4. Launch your local browser application target and connect using local application pipelines:
 `http://localhost/Car4Rent/index.php`
+=======
+## Database / Setup
+### DB name
+- **Database**: `data1`
+- **Table**: `user`
+
+### Import (typical)
+1. Create/select database `data1` in phpMyAdmin.
+2. Import the schema from `hawid/bag_o_db.sql`.
+
+*(Your `hawid/` folder is kept as reference/archive files.)*
+
+### Test account (from your notes)
+- username: `herta`
+- password: `qwe`
+
+---
+
+## Quick Start (Local)
+1. Copy this project into your web server root (e.g., `XAMPP/htdocs/`).
+2. Start **Apache** and **MySQL**.
+3. Import the `user` table into database `data1`.
+4. Open:
+   - `http://localhost/<your-folder-name>/index.php`
+
+---
+
+## Notes (important)
+- Passwords are hashed using **MD5** in this project (educational/demo only; not recommended for production).
+- Uploaded profile pictures are restricted to: `jpg, jpeg, png, gif`.
+>>>>>>> Stashed changes
 
 ---
 
