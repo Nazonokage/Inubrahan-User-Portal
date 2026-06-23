@@ -1,0 +1,43 @@
+{
+  "particles": {
+    "number": {
+      "value": 6,
+      "density": {
+        "enable": true,
+        "value_area": 800
+      }
+    },
+    "color": {
+      "value": "#888"
+    },
+    "shape": {
+      "type": "polygon",
+      "polygon": {
+        "nb_sides": 6
+      }
+    },
+    "opacity": {
+      "value": 0.3,
+      "random": true
+    },
+    "size": {
+      "value": 160,
+      "anim": {
+        "enable": true,
+        "speed": 15,
+        "size_min": 40
+      }
+    },
+    "move": {
+      "enable": true,
+      "speed": 8
+    }
+  },
+  "interactivity": {
+    "detect_on": "canvas",
+    "events": {
+      "resize": true
+    }
+  },
+  "retina_detect": true
+}
